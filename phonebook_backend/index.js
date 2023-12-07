@@ -86,23 +86,33 @@ let persons = [
         error: 'number missing' 
       })
     }
-    
-    if (persons.map(n=>n.name).includes(body.name)) {
+
+    if (!body.name) {
         return response.status(400).json({ 
-          error: 'Name is already in phonebook' 
+          error: 'name missing' 
         })
       }
+    
+    // if (persons.map(n=>n.name).includes(body.name)) {
+    //     return response.status(400).json({ 
+    //       error: 'Name is already in phonebook' 
+    //     })
+    //   }
   
-    const person = {
-        id: generateId(),
+    const person = new Person ({
+       // id: generateId(),
         name: body.name,
         number: body.number,
       
-    }
+    })
   
-    persons = persons.concat(person)
+    //persons = persons.concat(person)
+    //response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+      })
   
-    response.json(person)
+  
   })
   
   
