@@ -19,10 +19,11 @@ function validator_format (val) {
     if (val.includes('-')) {
         const parts = val.split('-');
         // console.log(parts)
-        // console.log("number format: ",/^\d$/.test(parts[0]))
-        // console.log("number format: ",/^\d$/.test(parts[1]))
-        if(parts[0].length < 2 || parts[0].length > 3) return false
-        if(/^\d$/.test(parts[1]) && /^\d$/.test(parts[0])) return true
+        // console.log("number format: ",/^\d+$/.test(parts[0]))
+        // console.log("number format: ",/^\d+$/.test(parts[1]))
+        if(parts.length > 2) return false  // only two parts
+        if(parts[0].length < 2 || parts[0].length > 3) return false // xx-xxxx.. or xxx-xxxxx...
+        if(/^\d+$/.test(parts[1]) && /^\d+$/.test(parts[0])) return true // number format
     } 
     return false
 }
