@@ -12,9 +12,35 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+function validator_length (val) {
+    return val.length >= 8
+}
+function validator_format (val) {
+    if (val.includes('-')) {
+        const parts = val.split('-');
+        // console.log(parts)
+        // console.log("number format: ",/^\d$/.test(parts[0]))
+        // console.log("number format: ",/^\d$/.test(parts[1]))
+        if(parts[0].length < 2 || parts[0].length > 3) return false
+        if(/^\d$/.test(parts[1]) && /^\d$/.test(parts[0])) return true
+    } 
+    return false
+}
+const validators = [
+    { validator: validator_length, message: 'Number must have at least 8 characters' }
+  , { validator: validator_format, message: 'Wrong format, should be xx-xxxxx or xxx-xxxx' }
+]
+
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minLength: 3,
+    required: true
+  },
+  number: {
+    type: String,
+    validate: validators
+  }
 })
 
 personSchema.set('toJSON', {
@@ -22,7 +48,7 @@ personSchema.set('toJSON', {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
-      delete returnedObject.id
+      
     }
   })
 

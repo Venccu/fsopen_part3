@@ -53,15 +53,21 @@ const App = () => {
             setTimeout(() => {setNotification(null)},3000)
           })
           .catch(error => {
+
+            // name is too short
+            console.log(error.response.data.error)
+            setError(error.response.data.error)
+            setTimeout(() => {setError(null)},3000)
+            
             // name does not exist anymore on server
-            setError(
-              `Information of ${newName} has already been removed from server`
-            )
-            setTimeout(() => {
-              setError(null)
-            }, 3000)
-            // delete name
-            setPersons(persons.filter(n => n.id !== nameid))
+            // setError(
+            //   `Information of ${newName} has already been removed from server`
+            // )
+            // setTimeout(() => {
+            //   setError(null)
+            // }, 3000)
+            // // delete name
+            // setPersons(persons.filter(n => n.id !== nameid))
           })
           
         }
@@ -78,11 +84,18 @@ const App = () => {
         setPersons(persons.concat(data))
         setNewName('')
         setNewNumber('')
+         // set notification
+         setNotification(`Added ${newName}`)
+         setTimeout(() => {setNotification(null)},3000)
         })
+      .catch(error => {
+        // access the error message
+        console.log(error.response.data.error)
+        setError(error.response.data.error)
+        setTimeout(() => {setError(null)},3000)
+      })
 
-        // set notification
-        setNotification(`Added ${newName}`)
-        setTimeout(() => {setNotification(null)},3000)
+      
       }
     
   }
